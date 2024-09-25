@@ -1,5 +1,7 @@
 package com.javaex.controller;
 
+import java.net.http.HttpResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javaex.service.UserService;
 import com.javaex.uti.JsonResult;
+import com.javaex.uti.JwtUtil;
 import com.javaex.vo.UserVo;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
-@RestController
+@RestController			// controller + responsebody
 public class UserController {
 
 	@Autowired		
@@ -47,7 +51,7 @@ public class UserController {
 	// http://localhost:9000/api/users/~
 	// http://localhost:3000/joinform
 	/* 아이디 중복체크 */
-	@PostMapping(value="/api/users/{id}")
+	@PostMapping("/api/users/{id}")
 	public JsonResult idCheck(@PathVariable(value="id") String id) {
 		System.out.println("UserController.idCheck()");
 		//System.out.println(id);
@@ -63,23 +67,25 @@ public class UserController {
 	}
 	
 	
-	
-	
-	// http://localhost:9000/api/user
+	// http://localhost:9000/api/users/login
 	// http://localhost:3000/loginform
 	/* 로그인 */
-	@PostMapping(value="/api/user")
-	public JsonResult login(@RequestBody UserVo userVo) {
+	@PostMapping("/api/users/login")
+	public JsonResult login(@RequestBody UserVo userVo, HttpServletResponse response) {
 		System.out.println("UserController.login()");
 		System.out.println(userVo);
-		UserVo authUser = userService.exeLogin(userVo);
+		UserVo authUser = userService.exeLogin(userVo);	// id, password만 온다
 		
-		if(authUser == null ) { 		//로그인 안됨
-			return JsonResult.fail("로그인에 실패했습니다.");
+		if(authUser != null ) { 	//로그인됨	
+			// 토큰을 만들고 "응답문서의 헤더"에 토큰을 붙여서 보낸다
+			JwtUtil.createTokenAndSetHeader(response, ""+authUser.getNo());
+			return JsonResult.success(authUser);	// no, name만 온다
 			
-		}else { 				//로그인됨
-			return JsonResult.success(authUser);
+		}else { 				//로그인 안됨
+			return JsonResult.fail("로그인 실패");	
 		}
+		
+		
 	}
 	
 	

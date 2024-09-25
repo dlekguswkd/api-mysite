@@ -26,6 +26,19 @@ public class UserDao {
 		
 	}
 	
+	/* (아이디 중복체크 api) id로 데이터 가져오기-id 사용여부 체크할때 사용 */
+	public int selectUserById(String id) {
+		System.out.println("UserDao.selectUserById()");
+		System.out.println(id);
+		
+		// 내가 요구해서 받는 count임 
+		int count = sqlSession.selectOne("user.selectById", id);
+		System.out.println(count);
+		
+		return count;
+		
+	}
+	
 	
 	//로그인 
 	public UserVo selectUser(UserVo userVo) {
@@ -63,20 +76,6 @@ public class UserDao {
 		}else { 
 			return null;
 		}
-		
-	}
-	
-	
-	/* (아이디 중복체크 api) id로 데이터 가져오기-id 사용여부 체크할때 사용 */
-	public int selectUserById(String id) {
-		System.out.println("UserDao.selectUserById()");
-		System.out.println(id);
-		
-		// 내가 요구해서 받는 count임 
-		int count = sqlSession.selectOne("user.selectById", id);
-		System.out.println(count);
-		
-		return count;
 		
 	}
 	

@@ -12,6 +12,16 @@
 			values(null, #{id}, #{password}, #{name}, #{gender})
 		]]>
 	</insert>
+	
+	
+	<!-- 아이디 중복체크 api -->						<!-- count의 결과는 int -->
+	<select id="selectById" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(*)
+			from users
+			where id = #{id}
+		]]>
+	</select>
 
 
 	<!-- 로그인 -->
@@ -24,6 +34,8 @@
 			and password = #{password}
 		]]>
 	</select>
+	
+	
 	
 	
 	<!-- 수정폼 -->
@@ -53,14 +65,6 @@
 	</update>
 	
 	
-	<!-- 아이디 중복체크 api -->						<!-- count의 결과는 int -->
-	<select id="selectById" parameterType="String" resultType="int">
-		<![CDATA[
-			select count(*)
-			from users
-			where id = #{id}
-		]]>
-	</select>
 
 
 </mapper>

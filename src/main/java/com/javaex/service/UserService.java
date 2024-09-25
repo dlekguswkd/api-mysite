@@ -23,6 +23,22 @@ public class UserService {
 	}
 	
 	
+	/* 아이디 중복체크 api */
+	public boolean exeIdCheck(String id) {
+		System.out.println("UserService.exeIdCheck()");
+		//System.out.println(id);
+
+		int count = userDao.selectUserById(id);
+		
+		if(count >= 1) {
+			return false;		// 이미 가입된 아이디 가입불가능
+		}else {
+			return true;		// 없는 아이디 가입가능
+		}
+		
+	}
+	
+	
 	/* 로그인 */
 	public UserVo exeLogin(UserVo userVo) {
 		System.out.println("UserService.exeLogin()");
@@ -51,24 +67,6 @@ public class UserService {
 		return authUser;
 		
 	}
-	
-
-	/* 아이디 중복체크 api */
-	public boolean exeIdCheck(String id) {
-		System.out.println("UserService.exeIdCheck()");
-		//System.out.println(id);
-
-		int count = userDao.selectUserById(id);
-		
-		if(count >= 1) {
-			return false;		// 이미 가입된 아이디 가입불가능
-		}else {
-			return true;		// 없는 아이디 가입가능
-		}
-		
-	}
-	
-	
 	
 
 }
