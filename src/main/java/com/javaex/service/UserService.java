@@ -23,10 +23,9 @@ public class UserService {
 	}
 	
 	
-	/* 아이디 중복체크 api */
+	/* 아이디 중복체크  */
 	public boolean exeIdCheck(String id) {
 		System.out.println("UserService.exeIdCheck()");
-		//System.out.println(id);
 
 		int count = userDao.selectUserById(id);
 		
@@ -49,24 +48,23 @@ public class UserService {
 	}
 	
 	/* 수정폼 */
-	public UserVo exeGetUserOne(UserVo userVo) {
-		System.out.println("UserService.exeGetUserOne()");
-		
-		UserVo authUser = userDao.getUserOne(userVo);
-		
-		return authUser;
-		
+	// 회원정보수정폼(1명 데이터가져오기)
+	public UserVo exeEditForm(int no) {
+		System.out.println("UserService.exeEditForm()");
+
+		UserVo userVo = userDao.userSelectOneByNo(no);
+		return userVo;
+	}
+
+	/* 수정 */
+	// 회원정보 수정
+	public int exeModifyUser(UserVo userVo) {
+		System.out.println("UserService.exeModifyUser()");
+
+		int count = userDao.userUpdate(userVo);
+		return count;
 	}
 	
-	/* 수정 */
-	public UserVo exeModify(UserVo userVo) {
-		System.out.println("UserService.exeModify()");
-		
-		UserVo authUser = userDao.updateUser(userVo);
-		
-		return authUser;
-		
-	}
 	
 
 }

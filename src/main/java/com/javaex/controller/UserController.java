@@ -1,8 +1,10 @@
 package com.javaex.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +13,7 @@ import com.javaex.uti.JsonResult;
 import com.javaex.uti.JwtUtil;
 import com.javaex.vo.UserVo;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController			// controller + responsebody
@@ -56,7 +59,7 @@ public class UserController {
 	}
 	
 	
-	// http://localhost:9000/api/user
+	// http://localhost:9000/api/users/login
 	// http://localhost:3000/loginform
 	/* 로그인 */
 	@PostMapping("/api/users/login")
@@ -74,52 +77,67 @@ public class UserController {
 			return JsonResult.fail("로그인 실패");	// no, name만 온다
 		}
 		
-		
 	}
 	
 	
+	// -----------------------------------------------------------------------------
+
+	/* 수정폼 */
+	/* 회원정보수정폼 (~번 회원정보 가져오기) */
+	// http://localhost:9000/api/users/me
+	@GetMapping("/api/users/me")
+	public JsonResult modifyform(HttpServletRequest request) {
+		System.out.println("UserController.modifyform()");
+		
+		// 요청헤더에서 토큰을 꺼내서 유효성을 체크한후 정상이면 no값을 꺼내준다 -> -1이면 가짜
+		int no = JwtUtil.getNoFromHeader(request);
+		// System.out.println(no);
+		
+		if (no != -1) {		// 토큰정상
+			UserVo userVo = userService.exeEditForm(no);	// no는 유저번호
+			return JsonResult.success(userVo);
+			
+		} else {		// 토큰이 없거나(로그인상태아님), 변조된 경우
+			return JsonResult.fail("토큰X, 비로그인, 변조");
+			
+		}
+
+	}
 	
+	/* 회원정보수정 */
+	@PutMapping("/api/users/me")
+	public JsonResult modifyUser(HttpServletRequest request, @RequestBody UserVo userVo) {
+		System.out.println("UserController.modifyUser()");
+		
+		// 화면에 있는 userVo 출력
+		//System.out.println(userVo);	// password, name, gender
+		
+		// 토큰사용해서 no값 출력
+		int no = JwtUtil.getNoFromHeader(request);
+		
+		if(no != -1) {		// 토큰이 정상일때
+			// userVo에 no값도 넣어주기
+			userVo.setNo(no);
+			// System.out.println(userVo);
+			int count = userService.exeModifyUser(userVo);	// no, password, name, gender
+			// System.out.println(count);
+			
+			if(count == 1) {	// 정상적으로 수정되었을때
+				userVo.setPassword(null);	// 로그인할때 토큰에 이름이랑 no만 저장하기때매
+				userVo.setGender(null);		// 불필요한걸 지워서 저장시키기위해 두개만 보냄
+				return JsonResult.success(userVo);
+				
+			}else {			// 비정상적으로 수정되었을때
+				return JsonResult.fail("수정오류, 수정실패");
+				
+			}
+			
+		}else {		// 토큰이 비정상일때
+			return JsonResult.fail("토큰X, 비로그인, 변조");
+			
+		}
+	}
 	
-//	// -----------------------------------------------------------------------------
-//	
-//	/* 수정폼 */
-//	//http://localhost:8888/mysite/user/modifyform
-//	@RequestMapping(value="/user/modifyform", method = {RequestMethod.GET, RequestMethod.POST})
-//	public String modifyform(HttpSession session, Model model) {
-//		System.out.println("UserController.modifyform()");
-//		
-//	    //로그인된 사용자 정보 가져오기
-//		//System.out.println("보내기용" + session.getAttribute("authUser"));
-//		
-//	    UserVo userVo = userService.exeGetUserOne((UserVo)session.getAttribute("authUser"));
-//	    
-//	    model.addAttribute(userVo);
-//	    //int no = authUser.getNo();
-//	    
-////	    model.addAttribute("userVo", authUser);
-//	    //System.out.println(authUser);
-//		
-//		return "user/modifyform";
-//		
-//	}
-//	
-//	/* 수정 */
-//	//http://localhost:8888/mysite/user/modify?password=~&name=~&gender=~
-//	@RequestMapping(value="/user/modify", method = {RequestMethod.GET, RequestMethod.POST})
-//	public String modify(@ModelAttribute UserVo userVo, HttpSession session) {
-//		System.out.println("UserController.modify()");
-//		
-//		UserVo authUser = userService.exeModify(userVo);
-//		
-//		session.setAttribute("authUser", authUser);
-//		
-//		//UserVo authUser = (UserVo)session.getAttribute("authUser") 
-//		//authUser.setName(userVo.getName());
-//		
-//		return "redirect:/main";
-//		
-//	}
-//	
 	
 	
 }

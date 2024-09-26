@@ -36,35 +36,29 @@
 	</select>
 	
 	
-	
-	
-	<!-- 수정폼 -->
-	<select id="selectByNoName" parameterType="com.javaex.vo.UserVo" resultType="com.javaex.vo.UserVo">
-		<![CDATA[
-			select 	no
-					, id
-					, password
-				    , name
-				    , gender 
+	<!-- 수정폼  no로 한명데이터 가져오기(회원정보수정 폼) -->
+	<select id="selectOneByNo" parameterType="int" resultType="com.javaex.vo.UserVo">
+		<![CDATA[ 
+			select 	no,
+					id,
+					name,
+					password,
+					gender
 			from users
 			where no = #{no}
-			and name = #{name}
 		]]>
 	</select>
 	
-
-	<!-- 수정 -->
-	<update id="updateUser" parameterType="com.javaex.vo.UserVo">
-		<![CDATA[
-		update 	users
-		set		password = #{password}
-				,name = #{name}
-				,gender = #{gender}
-		where no= #{no}
+	<!-- 회원정보수정 -->
+	<update id="update" parameterType="com.javaex.vo.UserVo">
+		<![CDATA[ 
+			update users
+			set name = #{name},
+				password = #{password},
+				gender = #{gender}
+			where no = #{no}
 		]]>
 	</update>
 	
-	
-
 
 </mapper>

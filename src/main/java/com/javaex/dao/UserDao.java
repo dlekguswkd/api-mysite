@@ -50,33 +50,22 @@ public class UserDao {
 	}
 	
 	
-	//수정폼
-	public UserVo getUserOne(UserVo userVo) {
-		System.out.println("UserDao.getUserOne()");
-		
-		System.out.println(userVo);
-		
-		UserVo authUser = sqlSession.selectOne("user.selectByNoName", userVo);
-		
-		System.out.println(authUser); //------
-		
-		return authUser;
-		
-	}
+	/* 수정폼 */
+	// no로 한명데이터 가져오기(회원정보수정 폼)
+	public UserVo userSelectOneByNo(int no) {
+		System.out.println("UserDao.userSelectOneByNo()");
 
+		UserVo userVo = sqlSession.selectOne("user.selectOneByNo", no);
+		return userVo;
+	}
 	
-	//수정 
-	public UserVo updateUser(UserVo userVo) {
-		System.out.println("UserDao.updateUser()");
-		
-		int count = sqlSession.update("user.updateUser", userVo);
-		
-		if (count == 1) { 
-			return userVo;  
-		}else { 
-			return null;
-		}
-		
+	/* 수정 */
+	// 수정(회원정보수정)
+	public int userUpdate(UserVo userVo) {
+		System.out.println("UserDao.userUpdate()");
+
+		int count = sqlSession.update("user.update", userVo);
+		return count;
 	}
 	
 	
