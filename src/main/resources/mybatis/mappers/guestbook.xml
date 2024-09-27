@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestbook">
+	<!-- 쿼리문작성 -->
+
+	<!-- 방명록폼 (리스트도 보이기) -->
+	<select id="selectList" resultType="com.javaex.vo.GuestbookVo">
+		<![CDATA[
+			select	no 
+					, name
+					, password
+        			, content
+        			, reg_date as regDate
+			from guestbook		
+			order by no desc
+		]]>
+	</select>
+	
+	
+	<!-- 방명록 등록 -->
+	<insert id="insert" parameterType="com.javaex.vo.GuestbookVo">
+		<![CDATA[   
+			insert into guestbook 
+			values (null, #{name}, #{password}, #{content}, now())
+		]]>
+	</insert>
+	
+	
+	<!-- 방명록 삭제 -->
+	<delete id="delete" parameterType="com.javaex.vo.GuestbookVo">
+		<![CDATA[
+			delete from guestbook
+			where no = #{no}
+			and password = #{password}
+		]]>
+
+	</delete>
+	
+	
+	<!-- ajax저장(저장하고 pk알아내기)ajax에서 등록하는법 (no 넣어줌)-->
+	<insert id="insertSelectKey" parameterType="com.javaex.vo.GuestbookVo">
+		<![CDATA[   
+			insert into guestbook 
+			values (null, #{name}, #{password}, #{content}, now())
+		]]>
+		
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
+			<![CDATA[ 
+				select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	
+	<!-- 데이터 1개 가져오기 (ajax저장에 필요) -->
+		<select id="selectOne" parameterType="int" resultType="com.javaex.vo.GuestbookVo">
+		<![CDATA[
+			select	no 
+					, name
+					, password
+        			, content
+        			, reg_date as regDate
+			from guestbook		
+			where no = #{no}
+		]]>
+	</select>
+	
+	
+</mapper>
