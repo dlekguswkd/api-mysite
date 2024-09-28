@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,45 +57,24 @@ public class GuestbookController {
 	}
 	
 	
-//	/* 방명록 삭제폼 */
-//	//http://localhost:8888/mysite/guestbook/deleteform
-//	@RequestMapping(value="/guestbook/deleteform",method= {RequestMethod.GET, RequestMethod.POST}) 
-//	public String deleteForm() {
-//		System.out.println("GuestbookController.deleteForm()");
-//		
-//		//no값을 숨겨놔야한다  addList.jsp에서 줌
-//		
-//		return "guestbook/deleteForm";
-//	}
-//	
-//	
-//	/* 방명록 삭제 */
-//	//http://localhost:8888/mysite/guestbook/guestbookdelete?no=~&password=~
-//	@RequestMapping(value="/guestbook/guestbookdelete",method= {RequestMethod.GET, RequestMethod.POST}) 
-//	public String guestbookDelete(@ModelAttribute GuestbookVo guestbookVo) {
-//		
-//		System.out.println("GuestbookController.guestbookDelete()");
-//		
-//		guestbookService.exeDeleteGuestbook(guestbookVo);
-//		
-//		return "redirect:/guestbook/guestbookform";
-//	}
-//
-//	
-//	/* ---------------------------------------------------------------------- */
-//	///////////////////////////////////////////////////////////////////////////
-//	
-//	/* ajaxindex  화면 뿌리기 */
-//	//http://localhost:8888/mysite/guestbook/ajaxindex
-//	@RequestMapping(value="/guestbook/ajaxindex", method= {RequestMethod.GET, RequestMethod.POST})
-//	public String ajaxindex() {
-//		System.out.println("GuestbookController.ajaxindex");
-//		
-//		// 방명록 데이터 리스트 가져오지 않는다
-//		
-//		return "guestbook/ajaxindex";
-//	}
-//	
-//	
-	
+	/* 방명록 삭제 */
+	// http://localhost:9000/api/guestbooks/~
+	@DeleteMapping("/api/guestbooks/{no}") 
+	public JsonResult guestbookDelete(@RequestBody GuestbookVo guestbookVo,
+								  @PathVariable(value="no") int no) {
+		System.out.println("GuestbookController.guestbookDelete()");
+		System.out.println(no);
+		
+		int count = guestbookService.exeDeleteGuestbook(no, guestbookVo.getPassword());
+		
+		if(count != 1) {	// 실패 (삭제안됨)
+			return JsonResult.fail("해당번호가 없습니다.");
+			
+		}else {				// 성공 (삭제됨) 
+			return JsonResult.success(count);
+		}
+		
+	}
+
+
 }

@@ -37,31 +37,17 @@ public class GuestbookService {
 	
 	
 	/* 방명록 삭제 */
-	public int exeDeleteGuestbook(GuestbookVo guestbookVo){
+	public int exeDeleteGuestbook(int no, String password){
 		System.out.println("GuestbokService.exeDeleteGuestbook()");
+		
+	    // GuestbookVo 객체 생성
+	    GuestbookVo guestbookVo = new GuestbookVo();
+	    guestbookVo.setNo(no); // no 설정
+	    guestbookVo.setPassword(password); // password 설정
 		
 		int count = guestbookDao.deleteGuestbook(guestbookVo);
 		
 		return count;
 	}
 	
-	
-	/* ajax 등록 저장 */
-	public GuestbookVo exeAddandGuest(GuestbookVo guestbookVo){
-		System.out.println("GuestbokService.exeAddandGuest()");
-		//////////비지니스 로직
-		//System.out.println(guestbookVo);
-		// 저장
-		int count = guestbookDao.insertSelectKey(guestbookVo);
-		//System.out.println(guestbookVo);
-		
-		// 1명 데이터 가져오기
-		GuestbookVo gVo = guestbookDao.guestbookselectOne(guestbookVo.getNo());	// guestbookVo에서 no를 가져와야함
-		//////////////////////////////////////////////
-		
-		return gVo;
-		
-	}
-	
-
 }
