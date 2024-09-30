@@ -23,6 +23,15 @@ public class BoardDao {
 		return boardList;
 	}
 	
+	/* 게시판 삭제 */
+	public int deleteBoard(int no) {
+		System.out.println("BoardDao.deleteBoard()");
+		
+		int count = sqlSession.delete("board.delete", no);
+		
+		return count;
+	}
+	
 	
 	/* 게시판 읽기 */
 	public BoardVo getRead(int no) {

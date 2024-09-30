@@ -20,6 +20,15 @@
 	</select>
 	
 	
+	<!-- 게시판 삭제 -->
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+		 	delete from board
+		 	where no = #{no}
+	]]>
+	</delete>
+	
+	
 	<!-- 읽기 하나씩 가져오기 -->
 	<select id="selectRead" parameterType="int" resultType="com.javaex.vo.BoardVo">
 		<![CDATA[
