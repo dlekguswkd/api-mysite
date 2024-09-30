@@ -55,7 +55,7 @@
 
 
 	<!-- 게시판 수정하기 -->
-	<update id="update" parameterType="com.javaex.vo.UserVo">
+	<update id="update" parameterType="com.javaex.vo.BoardVo">
 		<![CDATA[
 			update board 
 			set title = #{title}

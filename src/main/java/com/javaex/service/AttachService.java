@@ -18,11 +18,27 @@ public class AttachService {
 	// 첨부파일 보내기
 	public String exeUpload(MultipartFile file) {
 		System.out.println("AttachService.exeUpload");
+
+		// 파일저장경로 변수
+		String saveDir;
+		
+		// 현재 os
+		String osName = System.getProperty("os.name").toLowerCase();	// 다 소문자로 바꾸기
+		System.out.println("--------------");
+		System.out.println(osName); 		// 학원컴퓨터는 windows 10
+		System.out.println("--------------");
 		
 		//사진에 기본정보로 우리가 관리할 정보를 뽑아내야된다 -->db저장
 		//파일 저장 폴더
-		String saveDir = "C:\\javaStudy\\upload";
-		
+		//String saveDir = "C:\\javaStudy\\upload";
+		if(osName.contains("linux")) {
+			System.out.println("리눅스");
+			saveDir = "/home/ec2-user/upload";
+			
+		}else {
+			System.out.println("윈도우");
+			saveDir = "C:\\javaStudy\\upload";
+		}
 		
 		//오리지날 파일명
 		String orgName = file.getOriginalFilename();
@@ -40,8 +56,9 @@ public class AttachService {
 		String savaName = System.currentTimeMillis() + UUID.randomUUID().toString()+exeName;
 		System.out.println("savaName: " + savaName);
 		
-		//파일 전체 경로+파일명
-		String filePath = saveDir + "\\" + savaName;
+		
+		//파일 전체 경로+파일명			윈도우"\\",  리눅스"//" 알아서 해줌
+		String filePath = saveDir + File.separator + savaName;
 		System.out.println("filePath: " + filePath);
 		
 		//(1)db저장
@@ -91,7 +108,7 @@ public class AttachService {
 		//String saveDir = "C:\\javaStudy\\upload";
 		if(osName.contains("linux")) {
 			System.out.println("리눅스");
-			saveDir = "/api/upload";
+			saveDir = "/home/ec2-user/upload";
 			
 		}else {
 			System.out.println("윈도우");

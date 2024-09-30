@@ -1,0 +1,142 @@
+# aws-root
+-- 계정 생성
+create user 'web'@'%' identified by 'web';
+
+-- 권한 설정
+grant all privileges on web_db.* to 'web'@'%' ;
+
+-- database 생성
+create database web_db
+    default character set utf8mb4
+    collate utf8mb4_general_ci
+    default encryption='n'
+;
+
+flush privileges;
+
+
+# ----------------------------------------------------
+
+# aws-web
+use web_db;
+
+show databases;
+
+-- 테이블생성
+create table users(
+    no 			integer 	auto_increment primary key,
+    id 			varchar(20) unique not null,
+    password 	varchar(20) not null,
+    name 		varchar(20),
+    gender 		varchar(10)
+);
+
+insert into users
+value (null, 'aaa', 'aaa', '정우성', 'male');
+
+insert into users
+value (null, 'bbb', 'bbb', '이효리', 'female');
+
+select * from users;
+
+
+
+-- guestbook 테이블 생성
+create table guestbook(
+	no integer primary key auto_increment,
+    name varchar(20) not null,
+    password varchar(20) not null,
+    content text,
+	reg_date datetime
+);
+
+-- 등록
+insert into guestbook
+values (null, 'aaa', 'aaa', '안녕하세요', now());
+
+insert into guestbook
+values (null, 'bbb', 'bbb', 'b입니다', now());
+
+-- 조회
+select * from guestbook;
+
+select 	no,
+		name,
+        password,
+		content,
+        reg_date
+from guestbook;
+
+
+
+create table board (
+	no integer primary key auto_increment
+    , title varchar(500) not null
+    , content text
+    , hit integer default 0
+    , reg_date datetime not null
+    , user_no integer not null
+	, foreign key (user_no) references users(no)
+);
+
+-- 데이터 추가
+insert into board (title, content, reg_date, user_no)
+values('aaa', 'aaa', now(), 1)
+;
+
+insert into board (title, content, reg_date, user_no)
+values('bbb', 'bbb', now(), 2)
+;
+
+-- 조회
+select * from board;
+
+-- 리스트 
+select  no
+		, title
+		, content
+        , hit
+        , reg_date
+        , user_no
+from board
+;
+
+
+create table attach (
+	no integer primary key auto_increment
+    , orgName varchar(200)
+    , saveName varchar(500)
+    , fileSize integer 
+    , filePath varchar(500)
+);
+
+
+-- 조회
+select * from attach;
+
+
+create table gallery (
+	no integer primary key auto_increment
+    , user_no integer
+	, content varchar(1000)
+	, filePath varchar(500)
+    , orgName varchar(200)
+    , saveName varchar(500)
+    , fileSize integer 
+   , foreign key (user_no) references users(no)
+);
+
+-- 조회
+select * from gallery;
+
+-- 리스트 
+select  no
+		, user_no
+		, content
+        , filePath
+        , orgName
+        , saveName
+		, fileSize
+from gallery
+;
+
