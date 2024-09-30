@@ -39,8 +39,8 @@ public class BoardController {
 	
 	
 //	/* 게시판 읽기 */
-//	//http://localhost:8888/mysite/board/boardread?no=~ 
-//	@RequestMapping(value="/board/boardread", method= {RequestMethod.GET, RequestMethod.POST})
+//	// http://localhost:9000/api/boards 
+//	@RequestMapping("/board/boardread")
 //	public String boardRead(@RequestParam(value="no") int no, Model model) {
 //		System.out.println("BoardController.boardRead()");
 //		
@@ -53,8 +53,8 @@ public class BoardController {
 //	
 //	
 //	/* 게시판 쓰기폼 */
-//	//http://localhost:8888/mysite/board/boardwriteform	
-//	@RequestMapping(value="/board/boardwriteform", method= {RequestMethod.GET, RequestMethod.POST})
+//	// http://localhost:9000/api/boards
+//	@RequestMapping("/board/boardwriteform")
 //	public String boardWriteform() {
 //		System.out.println("BoardController.boardWriteform()");
 //	
@@ -63,9 +63,8 @@ public class BoardController {
 //	
 //	
 //	/* 게시판 쓰기(등록) */
-//	//http://localhost:8888/mysite/board/boardwrite		
-//	@RequestMapping(value="/board/boardwrite", method= {RequestMethod.GET, RequestMethod.POST})
-//														// , HttpSession session
+//	// http://localhost:9000/api/boards
+//	@RequestMapping("/board/boardwrite", )
 //	public String boardWrite(@ModelAttribute BoardVo boardVo) {
 //		System.out.println("BoardController.boardWrite()");
 //		
@@ -78,8 +77,8 @@ public class BoardController {
 //	
 //	
 //	/* 게시판 수정폼  */
-//	//http://localhost:8888/mysite/board/boardmodifyform
-//	@RequestMapping(value="/board/boardmodifyform", method= {RequestMethod.GET, RequestMethod.POST})
+//	// http://localhost:9000/api/boards
+//	@RequestMapping("/board/boardmodifyform")
 //	public String boardModifyform(@RequestParam(value="no") int no, Model model) {
 //		System.out.println("boardController.boardModifyform()");
 //
@@ -92,8 +91,8 @@ public class BoardController {
 //	
 //	
 //	/* 게시판 수정  */
-//	//http://localhost:8888/mysite/board/boardmodify
-//	@RequestMapping(value="/board/boardmodify", method= {RequestMethod.GET, RequestMethod.POST})
+//	// http://localhost:9000/api/boards
+//	@RequestMapping("/board/boardmodify")
 //	public String boardModify(@ModelAttribute BoardVo boardVo) {
 //		System.out.println("boardController.boardModify()");
 //		
