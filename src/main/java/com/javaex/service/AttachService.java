@@ -33,7 +33,8 @@ public class AttachService {
 		//String saveDir = "C:\\javaStudy\\upload";
 		if(osName.contains("linux")) {
 			System.out.println("리눅스");
-			saveDir = "/home/ec2-user/upload";
+//			saveDir = "/home/ec2-user/upload";
+			saveDir = "/app/upload";	// 컨테이너안에 만들어지는, 컴퓨터밖은 몰라 (사실은 컨테이너밖에 저장됨)
 			
 		}else {
 			System.out.println("윈도우");
