@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,7 +63,7 @@ public class BoardController {
 	}
 	
 	
-	/* 게시판 읽기 */
+	/* 게시판 읽기 수정폼이랑 똑같음 */
 	// http://localhost:9000/api/boards 
 	@GetMapping("/api/boards/{no}")
 	public JsonResult boardRead(@PathVariable(value="no") int no) {
@@ -97,31 +98,42 @@ public class BoardController {
 		}
 	}
 	
-//	
-//	/* 게시판 수정폼  */
-//	// http://localhost:9000/api/boards
-//	@RequestMapping("/board/boardmodifyform")
-//	public String boardModifyform(@RequestParam(value="no") int no, Model model) {
+	
+	/* 게시판 수정  */
+	// http://localhost:9000/api/boards/~
+	@PutMapping("/api/boards/{no}")
+	public JsonResult boardModify(@RequestBody BoardVo boardVo,
+							  @PathVariable(value="no") int no) { 
+		System.out.println("boardController.boardModify()");
+		
+		boardVo.setNo(no);
+		
+		BoardVo updateVo = boardService.exeboardModify(boardVo);
+		System.out.println(boardVo);
+
+		if(updateVo != null) {
+			return JsonResult.success(updateVo);
+		}else { 				//로그인 안됨
+			return JsonResult.fail("게시판 수정실패");	
+		}
+	}
+	
+	
+	/* 게시판 수정폼  */
+//	// http://localhost:9000/api/boards/~
+//	@GetMapping("/api/boards/{no}")
+//	public JsonResult boardModifyform(@RequestParam(value="no") int no) {
 //		System.out.println("boardController.boardModifyform()");
 //
 //		BoardVo boardVo = boardService.exeGetReadOne(no);
 //		
-//		model.addAttribute("boardVo", boardVo);	
-//		
-//		return "board/modifyForm";
+//		if(boardVo == null) {
+//			return JsonResult.fail("번호가 없습니다.");
+//			
+//		}else {
+//			return JsonResult.success(boardVo);
+//		}
 //	}
-//	
-//	
-//	/* 게시판 수정  */
-//	// http://localhost:9000/api/boards
-//	@RequestMapping("/board/boardmodify")
-//	public String boardModify(@ModelAttribute BoardVo boardVo) {
-//		System.out.println("boardController.boardModify()");
-//		
-//		BoardVo updateVo = boardService.exeboardModify(boardVo);
-//
-//		return "redirect:/board/boardlist";
-//	}
-//	
-//	
+	
+	
 }
