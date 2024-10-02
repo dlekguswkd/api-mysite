@@ -52,7 +52,7 @@ jobs: # 작업을 정의
             sudo docker stop mysite || true
             sudo docker rm mysite || true
             sudo docker rmi mysite || true
-			
+
             sudo docker pull dlekgus1119/mysite:latest
             sudo docker run -d \
               --name mysite \
