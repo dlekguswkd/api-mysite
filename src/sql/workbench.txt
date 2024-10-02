@@ -102,6 +102,18 @@ from board
 ;
 
 
+DELIMITER //
+
+CREATE PROCEDURE increaseHitCount(IN postHit INT)
+BEGIN
+    UPDATE board
+    SET hit = hit + 1
+    WHERE no = postHit;
+END //
+
+DELIMITER ;
+
+
 create table attach (
 	no integer primary key auto_increment
     , orgName varchar(200)
