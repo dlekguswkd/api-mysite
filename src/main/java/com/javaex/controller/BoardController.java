@@ -75,7 +75,7 @@ public class BoardController {
 		if(boardVo != null) {
 			return JsonResult.success(boardVo);
 		}else { 				//로그인 안됨
-			return JsonResult.fail("게시판 읽기실패");	
+			return JsonResult.fail("게시판 읽기실패");
 		}
 		
 	}
